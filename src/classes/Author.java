@@ -1,9 +1,9 @@
 package classes;
 
 public class Author {
-    public String pseudonym;
-    public String genre;
-    public Label label;
+    private String pseudonym;
+    private String genre;
+    private Label label;
 
     public Author() {}
 

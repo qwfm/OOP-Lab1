@@ -1,8 +1,8 @@
 package classes;
 
 public class Label {
-    String name;
-    String location;
+    private String name;
+    private String location;
 
     public Label() {}
 

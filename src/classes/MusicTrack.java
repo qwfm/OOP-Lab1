@@ -35,25 +35,30 @@ public class MusicTrack {
         if (seconds < 0 || minutes < 0) {
             System.out.print("Time input is wrong - try again");
         } else {
-            this.minutes += (int) (seconds / 60);
-            this.seconds = seconds % 60;
+            float totalSeconds = minutes * 60 + seconds;
 
-            this.hours += (int) (minutes / 60);
-            this.minutes += minutes % 60;
+            float newTotalSeconds = this.hours * 3600 + this.minutes * 60 + this.seconds + totalSeconds;
 
-            if (this.minutes >= 60) {
-                this.hours += (int) (this.minutes / 60);
-                this.minutes = this.minutes % 60;
-            }
+            this.hours = (int) (newTotalSeconds / 3600);
+            this.minutes = (int) ((newTotalSeconds % 3600) / 60);
+            this.seconds = newTotalSeconds % 60;
         }
     }
 
     public void getDuration() {
         if (hours>0) System.out.printf("%d:", (int) hours);
-        System.out.printf("%02d:%02d", (int) minutes, (int) seconds);
+        else System.out.printf("%02d:%02d", (int) minutes, (int) seconds);
     }
 
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
+    public float getHours() {
+        return hours;
+    }
+
+    public float getMinutes() {
+        return minutes;
+    }
+
+    public float getSeconds() {
+        return seconds;
     }
 }
