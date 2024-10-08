@@ -1,18 +1,27 @@
 package classes;
 
-public class MusicTrack {
+public class Song {
+    private int songID;
     private Author author;
     private String name;
     private float hours = 0;
     private float minutes = 0;
     private float seconds = 0;
 
-    public MusicTrack() {}
+    public Song() {}
 
-    public MusicTrack(Author author, String name, float minutes, float seconds) {
+    public Song(Author author, String name, float minutes, float seconds) {
         this.author = author;
         this.name = name;
         setDuration(minutes, seconds);
+    }
+
+    public int getSongID() {
+        return songID;
+    }
+
+    public void setSongID(int songID) {
+        this.songID = songID;
     }
 
     public Author getAuthor() {
@@ -45,7 +54,7 @@ public class MusicTrack {
         }
     }
 
-    public void getDuration() {
+    public void duration() {
         if (hours>0) System.out.printf("%d:", (int) hours);
         else System.out.printf("%02d:%02d", (int) minutes, (int) seconds);
     }

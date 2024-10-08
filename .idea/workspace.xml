@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="Make basic classes and a test function to test it out (not that it wouldn't work, there is nothing to break)">
+    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="Added a SongCollection class (name speaks for itself), simplified calculation of a song's duration a little)">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/junit_jupiter.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Lab1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/Label.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Label.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/MusicTrack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/MusicTrack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/MusicTrack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Song.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/SongCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/SongCollection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.db" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,18 +29,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "qwfm"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;qwfm&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/qwfm/OOP-Lab1.git",
-    "accountId": "1baa6ac8-306a-4340-a0a2-22ce469994f9"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/qwfm/OOP-Lab1.git&quot;,
+    &quot;accountId&quot;: &quot;1baa6ac8-306a-4340-a0a2-22ce469994f9&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -45,7 +48,9 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="2mWjb6XTo4F0RUT3JDWEVpKZ21W" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -53,13 +58,18 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/OOP/Lab1/Lab1&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/gfds&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;D:/OOP/Lab1/Lab1/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;settings.qodana&quot;
@@ -94,7 +104,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727874444969</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added a SongCollection class (name speaks for itself), simplified calculation of a song's duration a little)">
+      <option name="closed" value="true" />
+      <created>1727894522989</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727894522989</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -110,6 +128,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Make basic classes and a test function to test it out (not that it wouldn't work, there is nothing to break)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Make basic classes and a test function to test it out (not that it wouldn't work, there is nothing to break)" />
+    <MESSAGE value="Added a SongCollection class (name speaks for itself), simplified calculation of a song's duration a little)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a SongCollection class (name speaks for itself), simplified calculation of a song's duration a little)" />
   </component>
 </project>
