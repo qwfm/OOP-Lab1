@@ -1,6 +1,7 @@
 package classes;
 
 public class Genre {
+    private int genreID;
     private String name;
 
     public Genre() {}
@@ -15,5 +16,13 @@ public class Genre {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getGenreID() {
+        return genreID;
+    }
+
+    public void setGenreID(int genreID) {
+        this.genreID = genreID;
     }
 }

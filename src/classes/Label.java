@@ -1,6 +1,7 @@
 package classes;
 
 public class Label {
+    private int labelID;
     private String name;
     private String location;
 
@@ -25,5 +26,13 @@ public class Label {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public int getLabelID() {
+        return labelID;
+    }
+
+    public void setLabelID(int labelID) {
+        this.labelID = labelID;
     }
 }

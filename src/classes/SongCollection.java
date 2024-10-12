@@ -10,6 +10,8 @@ public class SongCollection {
     private String name;
     private List<Song> songs;
 
+    public SongCollection() {}
+
     public List<Song> getSongs() {
         return songs;
     }
@@ -53,13 +55,10 @@ public class SongCollection {
         this.name = name;
     }
 
-    // Method to sort songs by the most popular genre first
     public void sortSongsByGenre() {
-        // Count the number of songs for each genre
         Map<Genre, Long> genreCountMap = songs.stream()
                 .collect(Collectors.groupingBy(musicTrack -> musicTrack.getAuthor().getGenre(), Collectors.counting()));
 
-        // Sort the songs by the genre popularity (most frequent genres first)
         songs.sort(Comparator.comparing((Song track) -> genreCountMap.get(track.getAuthor().getGenre()))
                 .reversed());
     }

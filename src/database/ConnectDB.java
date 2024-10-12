@@ -23,10 +23,9 @@ public class ConnectDB {
         }
     }
 
-    public void closeDB() {
+    public void closeConnection() {
         try {
             if (connection != null) {
-                System.out.print("Connection to local DB closed");
                 connection.close();
             }
         } catch (SQLException e) {
@@ -34,7 +33,11 @@ public class ConnectDB {
         }
     }
 
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException {
+        if (connection == null  || connection.isClosed()) {
+                System.out.println("Connection is null, initializing.");
+                initiateConnection();
+        }
         return connection;
     }
 }
