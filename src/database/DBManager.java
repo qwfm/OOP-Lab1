@@ -203,9 +203,9 @@ public class DBManager {
 
             stmt.setInt(1, song.getAuthor().getAuthorID());
             stmt.setString(2, song.getName());
-            stmt.setFloat(3, song.getHours());
-            stmt.setFloat(4, song.getMinutes());
-            stmt.setFloat(5, song.getSeconds());
+            stmt.setInt(3, (int) song.getHours());
+            stmt.setInt(4, (int) song.getMinutes());
+            stmt.setInt(5, (int) song.getSeconds());
             stmt.executeUpdate();
 
             ResultSet generatedKeys = stmt.getGeneratedKeys();
@@ -233,7 +233,7 @@ public class DBManager {
                 song = new Song();
                 song.setSongID(rs.getInt("id"));
                 song.setName(rs.getString("name"));
-                song.setDuration(rs.getFloat("duration_minutes"), rs.getFloat("duration_seconds"));
+                song.setDuration(rs.getInt("duration_minutes"), rs.getInt("duration_seconds"));
                 song.setAuthor(getAuthorById(rs.getInt("author_id")));
             }
         } catch (SQLException e) {
@@ -242,21 +242,105 @@ public class DBManager {
         return song;
     }
 
-    public void updateSong(Song song) {
-        String sql = "UPDATE Songs SET name = ?, duration_hours = ?, duration_minutes = ?, duration_seconds = ? WHERE id = ?";
+    // Новий метод для оновлення Genre
+    public void updateGenre(Genre genre) {
+        String sql = "UPDATE Genres SET name = ? WHERE id = ?";
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, genre.getName());
+            stmt.setInt(2, genre.getGenreID());
 
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Genre updated successfully.");
+            } else {
+                System.out.println("No genre found with ID: " + genre.getGenreID());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating genre", e);
+        }
+    }
+
+    // Новий метод для оновлення Label
+    public void updateLabel(Label label) {
+        String sql = "UPDATE Labels SET name = ?, location = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, label.getName());
+            stmt.setString(2, label.getLocation());
+            stmt.setInt(3, label.getLabelID());
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Label updated successfully.");
+            } else {
+                System.out.println("No label found with ID: " + label.getLabelID());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating label", e);
+        }
+    }
+
+    // Новий метод для оновлення Author
+    public void updateAuthor(Author author) {
+        String sql = "UPDATE Authors SET name = ?, genre_id = ?, label_id = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, author.getName());
+            stmt.setInt(2, author.getGenre().getGenreID());
+            stmt.setInt(3, author.getLabel().getLabelID());
+            stmt.setInt(4, author.getAuthorID());
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Author updated successfully.");
+            } else {
+                System.out.println("No author found with ID: " + author.getAuthorID());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating author", e);
+        }
+    }
+
+    // Оновлений метод для оновлення Song
+    public void updateSong(Song song) {
+        String sql = "UPDATE Songs SET name = ?, author_id = ?, duration_hours = ?, duration_minutes = ?, duration_seconds = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
             stmt.setString(1, song.getName());
-            stmt.setFloat(2, song.getHours());
-            stmt.setFloat(3, song.getMinutes());
-            stmt.setFloat(4, song.getSeconds());
-            stmt.setInt(5, song.getSongID());
+            stmt.setInt(2, song.getAuthor().getAuthorID());
+            stmt.setInt(3,(int) song.getHours());
+            stmt.setInt(4,(int) song.getMinutes());
+            stmt.setInt(5,(int) song.getSeconds());
+            stmt.setInt(6, song.getSongID());
 
-            stmt.executeUpdate();
-            System.out.println("Song updated successfully.");
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Song updated successfully.");
+            } else {
+                System.out.println("No song found with ID: " + song.getSongID());
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error updating song", e);
+        }
+    }
+
+    // Новий метод для оновлення SongCollection
+    public void updateSongCollection(SongCollection collection) {
+        String sql = "UPDATE SongCollections SET name = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, collection.getName());
+            stmt.setInt(2, collection.getCollectionID());
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Song collection updated successfully.");
+            } else {
+                System.out.println("No song collection found with ID: " + collection.getCollectionID());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating song collection", e);
         }
     }
 
@@ -270,6 +354,144 @@ public class DBManager {
             System.out.println("Song deleted successfully.");
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting song", e);
+        }
+    }
+
+    // Новий метод для видалення Genre
+    public void deleteGenreById(int genreId) {
+        String sql = "DELETE FROM Genres WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, genreId);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Genre deleted successfully.");
+            } else {
+                System.out.println("No genre found with ID: " + genreId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting genre", e);
+        }
+    }
+
+    // Новий метод для видалення Label
+    public void deleteLabelById(int labelId) {
+        String sql = "DELETE FROM Labels WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, labelId);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Label deleted successfully.");
+            } else {
+                System.out.println("No label found with ID: " + labelId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting label", e);
+        }
+    }
+
+    // Новий метод для видалення Author
+    public void deleteAuthorById(int authorId) {
+        String sql = "DELETE FROM Authors WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, authorId);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Author deleted successfully.");
+            } else {
+                System.out.println("No author found with ID: " + authorId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting author", e);
+        }
+    }
+
+    // Новий метод для видалення SongCollection
+    public void deleteSongCollectionById(int collectionId) {
+        String sql = "DELETE FROM SongCollections WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, collectionId);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Song collection deleted successfully.");
+            } else {
+                System.out.println("No song collection found with ID: " + collectionId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting song collection", e);
+        }
+    }
+
+    public void destroyDatabase() {
+        String[] tables = {"SongCollectionTracks", "SongCollections", "Songs", "Authors", "Labels", "Genres"};
+
+        try {
+            // Disable foreign key constraints
+            try (Statement stmt = connection.getConnection().createStatement()) {
+                stmt.execute("PRAGMA foreign_keys = OFF;");
+            }
+
+            // Drop tables
+            for (String table : tables) {
+                String sql = "DROP TABLE IF EXISTS " + table;
+                try (Statement stmt = connection.getConnection().createStatement()) {
+                    stmt.execute(sql);
+                    System.out.println("Table " + table + " dropped successfully.");
+                }
+            }
+
+            // Re-enable foreign key constraints
+            try (Statement stmt = connection.getConnection().createStatement()) {
+                stmt.execute("PRAGMA foreign_keys = ON;");
+            }
+
+            System.out.println("Database destroyed successfully.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Error destroying database", e);
+        }
+    }
+
+    public void clearDatabase() {
+        String[] tables = {"SongCollectionTracks", "SongCollections", "Songs", "Authors", "Labels", "Genres"};
+
+        try {
+            // Disable foreign key constraints
+            try (Statement stmt = connection.getConnection().createStatement()) {
+                stmt.execute("PRAGMA foreign_keys = OFF;");
+            }
+
+            // Clear tables
+            for (String table : tables) {
+                String sql = "DELETE FROM " + table;
+                try (Statement stmt = connection.getConnection().createStatement()) {
+                    stmt.execute(sql);
+                    System.out.println("Table " + table + " cleared successfully.");
+                }
+            }
+
+            // Reset auto-increment counters
+            for (String table : tables) {
+                String sql = "DELETE FROM sqlite_sequence WHERE name='" + table + "'";
+                try (Statement stmt = connection.getConnection().createStatement()) {
+                    stmt.execute(sql);
+                }
+            }
+
+            // Re-enable foreign key constraints
+            try (Statement stmt = connection.getConnection().createStatement()) {
+                stmt.execute("PRAGMA foreign_keys = ON;");
+            }
+
+            System.out.println("Database cleared successfully.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Error clearing database", e);
         }
     }
 }

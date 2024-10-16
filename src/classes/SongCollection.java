@@ -12,6 +12,13 @@ public class SongCollection {
 
     public SongCollection() {}
 
+    public SongCollection(String name,
+                          List<Song> songs) {
+        this.name = name;
+        this.songs = songs;
+        sortSongsByGenre();
+    }
+
     public List<Song> getSongs() {
         return songs;
     }
@@ -26,12 +33,7 @@ public class SongCollection {
 
     public void setSongs(List<Song> songs) {
         this.songs = songs;
-    }
-
-    public SongCollection(String name,
-                          List<Song> songs) {
-        this.name = name;
-        this.songs = songs;
+        sortSongsByGenre();
     }
 
     public void totalDuration() {
@@ -45,7 +47,6 @@ public class SongCollection {
 
         System.out.printf("%d:%02d:%02d", hours, minutes, seconds);
     }
-
 
     public String getName() {
         return name;
@@ -70,7 +71,7 @@ public class SongCollection {
             String genreName = song.getAuthor().getGenre().getName();
 
             System.out.printf("Title: %s, Author: %s, Genre: %s, Duration: ", title, authorName, genreName);
-            song.duration();
+            song.outputDuration();
             System.out.println();
         });
     }

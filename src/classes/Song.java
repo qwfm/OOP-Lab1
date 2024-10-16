@@ -44,6 +44,8 @@ public class Song {
         if (seconds < 0 || minutes < 0) {
             System.out.print("Time input is wrong - try again");
         } else {
+            this.minutes = 0;
+            this.seconds = 0;
             float totalSeconds = minutes * 60 + seconds;
 
             float newTotalSeconds = this.hours * 3600 + this.minutes * 60 + this.seconds + totalSeconds;
@@ -54,9 +56,9 @@ public class Song {
         }
     }
 
-    public void duration() {
-        if (hours>0) System.out.printf("%d:", (int) hours);
-        else System.out.printf("%02d:%02d", (int) minutes, (int) seconds);
+    public void outputDuration() {
+        if (getHours()>0) System.out.printf("%d:", (int) getHours());
+        else System.out.printf("%02d:%02d", (int) getMinutes(), (int) getSeconds());
     }
 
     public float getHours() {

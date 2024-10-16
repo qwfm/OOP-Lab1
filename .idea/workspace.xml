@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="">
+    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="Made a DB - manager class, minor changes to some classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Lab1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/music.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Genre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/Label.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Label.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Song.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/SongCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/SongCollection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/controller/Controller.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/controller/InputManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/ConnectDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/ConnectDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/SongTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/DBManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/DBManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +118,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728419310759</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Made a DB - manager class, minor changes to some classes">
+      <option name="closed" value="true" />
+      <created>1728745313230</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1728745313230</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -140,7 +144,8 @@
     <MESSAGE value="Make basic classes and a test function to test it out (not that it wouldn't work, there is nothing to break)" />
     <MESSAGE value="Added a SongCollection class (name speaks for itself), simplified calculation of a song's duration a little)" />
     <MESSAGE value="Every mention anywhere of musicTrack has been renamed to &quot;song&quot;, added an initializer for some tables in DB, added a genre class, added a class for a table of songs with some functions + sorting of songs by genre" />
-    <option name="LAST_COMMIT_MESSAGE" value="Every mention anywhere of musicTrack has been renamed to &quot;song&quot;, added an initializer for some tables in DB, added a genre class, added a class for a table of songs with some functions + sorting of songs by genre" />
+    <MESSAGE value="Made a DB - manager class, minor changes to some classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made a DB - manager class, minor changes to some classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
