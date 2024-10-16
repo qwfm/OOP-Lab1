@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="Made a DB - manager class, minor changes to some classes">
+    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="Made some tests, added update methods and remade some + unfinished menu">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/music.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Song.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/SongCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/SongCollection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/DBManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MainMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +126,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728745313230</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Made some tests, added update methods and remade some + unfinished menu">
+      <option name="closed" value="true" />
+      <created>1729096511292</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1729096511292</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -145,7 +153,8 @@
     <MESSAGE value="Added a SongCollection class (name speaks for itself), simplified calculation of a song's duration a little)" />
     <MESSAGE value="Every mention anywhere of musicTrack has been renamed to &quot;song&quot;, added an initializer for some tables in DB, added a genre class, added a class for a table of songs with some functions + sorting of songs by genre" />
     <MESSAGE value="Made a DB - manager class, minor changes to some classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made a DB - manager class, minor changes to some classes" />
+    <MESSAGE value="Made some tests, added update methods and remade some + unfinished menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made some tests, added update methods and remade some + unfinished menu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

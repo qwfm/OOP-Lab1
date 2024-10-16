@@ -19,7 +19,7 @@ public class DatabaseTester {
         testSong();
         testSongCollection();
         closeConnection();
-        dbManager.clearDatabase();
+        //dbManager.clearDatabase();
     }
 
     private static void initializeDatabase() throws SQLException {

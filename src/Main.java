@@ -1,12 +1,7 @@
-import database.ConnectDB;
-import database.DB_Initializer;
-import tests.*;
 import menu.*;
+import tests.DatabaseTester;
 
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Main {
@@ -15,7 +10,7 @@ public class Main {
 
         try{Class.forName("org.sqlite.JDBC");}catch(ClassNotFoundException e){System.out.print("");}
 
-        //DatabaseTester.test();
+        DatabaseTester.test();
 
         MainMenu.startMenu();
     }

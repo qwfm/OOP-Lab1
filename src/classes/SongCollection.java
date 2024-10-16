@@ -16,7 +16,6 @@ public class SongCollection {
                           List<Song> songs) {
         this.name = name;
         this.songs = songs;
-        sortSongsByGenre();
     }
 
     public List<Song> getSongs() {

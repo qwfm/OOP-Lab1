@@ -40,19 +40,17 @@ public class DBManager {
         }
     }
 
-
-
     public Genre getGenreById(int id) {
         String sql = "SELECT * FROM Genres WHERE id = ?";
         Genre genre = null;
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 genre = new Genre();
+                genre.setGenreID(rs.getInt("id"));  // Додаємо встановлення ID
                 genre.setName(rs.getString("name"));
             }
         } catch (SQLException e) {
@@ -85,19 +83,17 @@ public class DBManager {
         }
     }
 
-
     public Author getAuthorById(int id) {
         String sql = "SELECT * FROM Authors WHERE id = ?";
         Author author = null;
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 author = new Author();
-                author.setAuthorID(rs.getInt("id"));
+                author.setAuthorID(rs.getInt("id"));  // Додаємо встановлення ID
                 author.setName(rs.getString("name"));
                 author.setGenre(getGenreById(rs.getInt("genre_id")));
                 author.setLabel(getLabelById(rs.getInt("label_id")));
@@ -130,18 +126,17 @@ public class DBManager {
         }
     }
 
-
     public Label getLabelById(int id) {
         String sql = "SELECT * FROM Labels WHERE id = ?";
         Label label = null;
 
         try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 label = new Label();
+                label.setLabelID(rs.getInt("id"));  // Додаємо встановлення ID
                 label.setName(rs.getString("name"));
                 label.setLocation(rs.getString("location"));
             }
@@ -357,61 +352,140 @@ public class DBManager {
         }
     }
 
-    // Новий метод для видалення Genre
     public void deleteGenreById(int genreId) {
-        String sql = "DELETE FROM Genres WHERE id = ?";
+        try {
+            connection.getConnection().setAutoCommit(false);
 
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, genreId);
-
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("Genre deleted successfully.");
-            } else {
-                System.out.println("No genre found with ID: " + genreId);
+            // Delete all songs of authors with this genre
+            String deleteSongsSQL = "DELETE FROM Songs WHERE author_id IN (SELECT id FROM Authors WHERE genre_id = ?)";
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteSongsSQL)) {
+                stmt.setInt(1, genreId);
+                stmt.executeUpdate();
             }
+
+            // Delete all authors with this genre
+            String deleteAuthorsSQL = "DELETE FROM Authors WHERE genre_id = ?";
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteAuthorsSQL)) {
+                stmt.setInt(1, genreId);
+                stmt.executeUpdate();
+            }
+
+            // Delete the genre
+            String deleteGenreSQL = "DELETE FROM Genres WHERE id = ?";
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteGenreSQL)) {
+                stmt.setInt(1, genreId);
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows > 0) {
+                    System.out.println("Genre and all related authors and songs deleted successfully.");
+                } else {
+                    System.out.println("No genre found with ID: " + genreId);
+                }
+            }
+
+            connection.getConnection().commit();
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting genre", e);
+            try {
+                connection.getConnection().rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException("Error rolling back transaction", ex);
+            }
+            throw new RuntimeException("Error deleting genre and related data", e);
+        } finally {
+            try {
+                connection.getConnection().setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException("Error resetting auto-commit", e);
+            }
         }
     }
 
-    // Новий метод для видалення Label
     public void deleteLabelById(int labelId) {
-        String sql = "DELETE FROM Labels WHERE id = ?";
+        try {
+            connection.getConnection().setAutoCommit(false);
 
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, labelId);
-
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("Label deleted successfully.");
-            } else {
-                System.out.println("No label found with ID: " + labelId);
+            // Delete all songs of authors with this label
+            String deleteSongsSQL = "DELETE FROM Songs WHERE author_id IN (SELECT id FROM Authors WHERE label_id = ?)";
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteSongsSQL)) {
+                stmt.setInt(1, labelId);
+                stmt.executeUpdate();
             }
+
+            // Delete all authors with this label
+            String deleteAuthorsSQL = "DELETE FROM Authors WHERE label_id = ?";
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteAuthorsSQL)) {
+                stmt.setInt(1, labelId);
+                stmt.executeUpdate();
+            }
+
+            // Delete the label
+            String deleteLabelSQL = "DELETE FROM Labels WHERE id = ?";
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteLabelSQL)) {
+                stmt.setInt(1, labelId);
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows > 0) {
+                    System.out.println("Label and all related authors and songs deleted successfully.");
+                } else {
+                    System.out.println("No label found with ID: " + labelId);
+                }
+            }
+
+            connection.getConnection().commit();
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting label", e);
+            try {
+                connection.getConnection().rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException("Error rolling back transaction", ex);
+            }
+            throw new RuntimeException("Error deleting label and related data", e);
+        } finally {
+            try {
+                connection.getConnection().setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException("Error resetting auto-commit", e);
+            }
         }
     }
 
-    // Новий метод для видалення Author
     public void deleteAuthorById(int authorId) {
-        String sql = "DELETE FROM Authors WHERE id = ?";
+        try {
+            connection.getConnection().setAutoCommit(false);
 
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, authorId);
-
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("Author deleted successfully.");
-            } else {
-                System.out.println("No author found with ID: " + authorId);
+            // Delete all songs of this author
+            String deleteSongsSQL = "DELETE FROM Songs WHERE author_id = ?";
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteSongsSQL)) {
+                stmt.setInt(1, authorId);
+                stmt.executeUpdate();
             }
+
+            // Delete the author
+            String deleteAuthorSQL = "DELETE FROM Authors WHERE id = ?";
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteAuthorSQL)) {
+                stmt.setInt(1, authorId);
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows > 0) {
+                    System.out.println("Author and all related songs deleted successfully.");
+                } else {
+                    System.out.println("No author found with ID: " + authorId);
+                }
+            }
+
+            connection.getConnection().commit();
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting author", e);
+            try {
+                connection.getConnection().rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException("Error rolling back transaction", ex);
+            }
+            throw new RuntimeException("Error deleting author and related data", e);
+        } finally {
+            try {
+                connection.getConnection().setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException("Error resetting auto-commit", e);
+            }
         }
     }
 
-    // Новий метод для видалення SongCollection
     public void deleteSongCollectionById(int collectionId) {
         String sql = "DELETE FROM SongCollections WHERE id = ?";
 
@@ -492,6 +566,83 @@ public class DBManager {
             System.out.println("Database cleared successfully.");
         } catch (SQLException e) {
             throw new RuntimeException("Error clearing database", e);
+        }
+    }
+
+    public void printAllSongs() {
+        String sql = "SELECT s.id, s.name, s.duration_hours, s.duration_minutes, s.duration_seconds, a.name as author_name " +
+                "FROM Songs s JOIN Authors a ON s.author_id = a.id";
+        try (Statement stmt = connection.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            System.out.println("All Songs:");
+            System.out.println("ID | Name | Author | Duration");
+            System.out.println("--------------------------------");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String authorName = rs.getString("author_name");
+                int hours = rs.getInt("duration_hours");
+                int minutes = rs.getInt("duration_minutes");
+                int seconds = rs.getInt("duration_seconds");
+                System.out.printf("%d | %s | %s | %02d:%02d:%02d%n", id, name, authorName, hours, minutes, seconds);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error printing all songs", e);
+        }
+    }
+
+    public void printAllAuthors() {
+        String sql = "SELECT a.id, a.name, g.name as genre_name, l.name as label_name " +
+                "FROM Authors a JOIN Genres g ON a.genre_id = g.id JOIN Labels l ON a.label_id = l.id";
+        try (Statement stmt = connection.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            System.out.println("All Authors:");
+            System.out.println("ID | Name | Genre | Label");
+            System.out.println("--------------------------------");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String genreName = rs.getString("genre_name");
+                String labelName = rs.getString("label_name");
+                System.out.printf("%d | %s | %s | %s%n", id, name, genreName, labelName);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error printing all authors", e);
+        }
+    }
+
+    public void printAllLabels() {
+        String sql = "SELECT * FROM Labels";
+        try (Statement stmt = connection.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            System.out.println("All Labels:");
+            System.out.println("ID | Name | Location");
+            System.out.println("--------------------------------");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String location = rs.getString("location");
+                System.out.printf("%d | %s | %s%n", id, name, location);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error printing all labels", e);
+        }
+    }
+
+    public void printAllGenres() {
+        String sql = "SELECT * FROM Genres";
+        try (Statement stmt = connection.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            System.out.println("All Genres:");
+            System.out.println("ID | Name");
+            System.out.println("--------------------------------");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                System.out.printf("%d | %s%n", id, name);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error printing all genres", e);
         }
     }
 }

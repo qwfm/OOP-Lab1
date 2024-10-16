@@ -23,22 +23,16 @@ public class MainMenu {
 
         do {
             System.out.println("===== MENU =====");
-            System.out.println("1. Add Genre");
-            System.out.println("2. Add Author");
-            System.out.println("3. Add Label");
-            System.out.println("4. Add Song");
-            System.out.println("5. View Genre");
-            System.out.println("6. View Author");
-            System.out.println("7. View Label");
-            System.out.println("8. View Song");
-            System.out.println("9. Update Genre");
-            System.out.println("10. Update Author");
-            System.out.println("11. Update Label");
-            System.out.println("12. Update Song");
-            System.out.println("13. Delete Genre");
-            System.out.println("14. Delete Author");
-            System.out.println("15. Delete Label");
-            System.out.println("16. Delete Song");
+            System.out.println("1. Add Genre      2. Add Author");
+            System.out.println("3. Add Label      4. Add Song");
+            System.out.println("5. View Genre     6. View Author");
+            System.out.println("7. View Label     8. View Song");
+            System.out.println("9. Update Genre   10. Update Author");
+            System.out.println("11. Update Label  12. Update Song");
+            System.out.println("13. Delete Genre  14. Delete Author");
+            System.out.println("15. Delete Label  16. Delete Song");
+            System.out.println("17. View All Genres  18. View All Authors");
+            System.out.println("19. View All Labels  20. View All Songs");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -92,6 +86,18 @@ public class MainMenu {
                 case 16:
                     deleteSong(scanner);
                     break;
+                case 17:
+                    viewAllGenres();
+                    break;
+                case 18:
+                    viewAllAuthors();
+                    break;
+                case 19:
+                    viewAllLabels();
+                    break;
+                case 20:
+                    viewAllSongs();
+                    break;
                 case 0:
                     System.out.println("Exiting...");
                     break;
@@ -102,6 +108,7 @@ public class MainMenu {
 
         scanner.close();
     }
+
 
     private static void addGenre(Scanner scanner) {
         scanner.nextLine(); // Clear the buffer before reading the full line
@@ -193,15 +200,19 @@ public class MainMenu {
     private static void viewAuthor(Scanner scanner) {
         Author author = null;
         while (author == null) {
-            System.out.print("Enter author ID: ");
-            int id = scanner.nextInt();
-            author = dbManager.getAuthorById(id);
-            if (author != null) {
+            try
+            {
+                System.out.print("Enter author ID: ");
+                int author_id = scanner.nextInt();
+                author = dbManager.getAuthorById(author_id);
+                Genre author_genre = dbManager.getGenreById(author.getGenre().getGenreID());
+                Label author_label = dbManager.getLabelById(author.getLabel().getLabelID());
                 System.out.println("Author: " + author.getName() +
-                        ", Genre: " + author.getGenre().getName() +
-                        ", Label: " + author.getLabel().getName());
-            } else {
-                System.out.println("Error: Invalid author ID.");
+                            ", Genre: " + author.getGenre().getName() +
+                            ", Label: " + author.getLabel().getName());
+            }
+            catch(NullPointerException e) {
+                System.out.println("Error: Invalid author/genre/label ID.");
                 return;
             }
         }
@@ -412,5 +423,21 @@ public class MainMenu {
             System.out.println("Error: Invalid song ID.");
             return;
         }
+    }
+
+    private static void viewAllGenres() {
+        dbManager.printAllGenres();
+    }
+
+    private static void viewAllAuthors() {
+        dbManager.printAllAuthors();
+    }
+
+    private static void viewAllLabels() {
+        dbManager.printAllLabels();
+    }
+
+    private static void viewAllSongs() {
+        dbManager.printAllSongs();
     }
 }
