@@ -22,17 +22,21 @@ public class MainMenu {
         int choice;
 
         do {
-            System.out.println("===== MENU =====");
-            System.out.println("1. Add Genre      2. Add Author");
-            System.out.println("3. Add Label      4. Add Song");
-            System.out.println("5. View Genre     6. View Author");
-            System.out.println("7. View Label     8. View Song");
-            System.out.println("9. Update Genre   10. Update Author");
-            System.out.println("11. Update Label  12. Update Song");
-            System.out.println("13. Delete Genre  14. Delete Author");
-            System.out.println("15. Delete Label  16. Delete Song");
-            System.out.println("17. View All Genres  18. View All Authors");
-            System.out.println("19. View All Labels  20. View All Songs");
+            System.out.println("============================== MENU ==============================");
+            System.out.println("1. Add Genre                               2. Add Author");
+            System.out.println("3. Add Label                               4. Add Song");
+            System.out.println("5. View Genre                              6. View Author");
+            System.out.println("7. View Label                              8. View Song");
+            System.out.println("9. Update Genre                            10. Update Author");
+            System.out.println("11. Update Label                           12. Update Song");
+            System.out.println("13. Delete Genre                           14. Delete Author");
+            System.out.println("15. Delete Label                           16. Delete Song");
+            System.out.println("17. View All Genres                        18. View All Authors");
+            System.out.println("19. View All Labels                        20. View All Songs");
+            System.out.println("21. Create Song Collection                 22. Add Song to Collection");
+            System.out.println("23. Remove Song from Collection            24. View Collection");
+            System.out.println("25. View Collection's total duration       26. Sort Collection by Genre (alphabetically)");
+            System.out.println("27. Delete Collection                      28. Find Song by Duration");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -98,6 +102,29 @@ public class MainMenu {
                 case 20:
                     viewAllSongs();
                     break;
+                case 21:
+                    createSongCollection(scanner);
+                    break;
+                case 22:
+                    addSongToCollection(scanner);
+                    break;
+                case 23:
+                    removeSongFromCollection(scanner);
+                    break;
+                case 24:
+                    viewSongCollection(scanner);
+                    break;
+                case 25:
+                    viewCollectionDuration(scanner);
+                    break;
+                case 26:
+                    sortCollectionSongsByGenre(scanner);
+                    break;
+                case 27:
+                    deleteSongCollection(scanner);
+                    break;
+                case 28:
+                    findClosestSongByDuration(scanner);
                 case 0:
                     System.out.println("Exiting...");
                     break;
@@ -111,20 +138,19 @@ public class MainMenu {
 
 
     private static void addGenre(Scanner scanner) {
-        scanner.nextLine(); // Clear the buffer before reading the full line
+        scanner.nextLine();
         System.out.print("Enter genre name: ");
-        String name = scanner.nextLine(); // Use nextLine to allow spaces
+        String name = scanner.nextLine();
         Genre genre = new Genre(name);
         dbManager.insertGenre(genre);
     }
 
     private static void addAuthor(Scanner scanner) {
-        scanner.nextLine(); // Clear the buffer before reading the full line
+        scanner.nextLine();
         System.out.print("Enter author name: ");
-        String name = scanner.nextLine(); // Use nextLine to allow spaces
+        String name = scanner.nextLine();
         Genre genre = null;
         Label label = null;
-        // Loop until valid genre and label IDs are entered
         while (genre == null) {
             System.out.print("Enter genre ID: ");
             int genreId = scanner.nextInt();
@@ -148,19 +174,19 @@ public class MainMenu {
     }
 
     private static void addLabel(Scanner scanner) {
-        scanner.nextLine(); // Clear the buffer before reading the full line
+        scanner.nextLine();
         System.out.print("Enter label name: ");
-        String name = scanner.nextLine(); // Use nextLine to allow spaces
+        String name = scanner.nextLine();
         System.out.print("Enter location: ");
-        String location = scanner.nextLine(); // Use nextLine to allow spaces
+        String location = scanner.nextLine();
         Label label = new Label(name, location);
         dbManager.insertLabel(label);
     }
 
     private static void addSong(Scanner scanner) {
-        scanner.nextLine(); // Clear the buffer before reading the full line
+        scanner.nextLine();
         System.out.print("Enter song name: ");
-        String name = scanner.nextLine(); // Use nextLine to allow spaces
+        String name = scanner.nextLine();
 
         Author author = null;
         while (author == null) {
@@ -439,5 +465,77 @@ public class MainMenu {
 
     private static void viewAllSongs() {
         dbManager.printAllSongs();
+    }
+
+    private static void createSongCollection(Scanner scanner) {
+        scanner.nextLine(); // Clear the buffer
+        System.out.print("Enter song collection name: ");
+        String name = scanner.nextLine();
+        SongCollection collection = new SongCollection(name, null);
+        dbManager.insertSongCollection(collection);
+    }
+
+    private static void addSongToCollection(Scanner scanner) {
+        System.out.print("Enter collection ID: ");
+        int collectionId = scanner.nextInt();
+        System.out.print("Enter song ID to add: ");
+        int songId = scanner.nextInt();
+        dbManager.addSongToCollection(collectionId, songId);
+    }
+
+    private static void removeSongFromCollection(Scanner scanner) {
+        System.out.print("Enter collection ID: ");
+        int collectionId = scanner.nextInt();
+        System.out.print("Enter song ID to remove: ");
+        int songId = scanner.nextInt();
+        dbManager.removeSongFromCollection(collectionId, songId);
+    }
+
+    private static void viewSongCollection(Scanner scanner) {
+        System.out.print("Enter collection ID: ");
+        int collectionId = scanner.nextInt();
+        dbManager.viewSongCollection(collectionId);
+    }
+
+    private static void deleteSongCollection(Scanner scanner) {
+        System.out.print("Enter collection ID to delete: ");
+        int collectionId = scanner.nextInt();
+        dbManager.deleteSongCollectionById(collectionId);
+    }
+
+    private static void viewCollectionDuration(Scanner scanner) {
+        System.out.print("Enter collection ID to view total duration of songs: ");
+        int collectionId = scanner.nextInt();
+        SongCollection col = dbManager.getSongCollectionById(collectionId);
+        col.printTotalDuration();
+        System.out.println();
+    }
+
+    private static void sortCollectionSongsByGenre(Scanner scanner) {
+        System.out.print("Enter collection ID to sort by genre: ");
+        int collectionId = scanner.nextInt();
+        SongCollection col = dbManager.getSongCollectionById(collectionId);
+        col.sortSongsByGenreAlphabetically();
+        System.out.println("Songs sorted!");
+    }
+
+    private static void findClosestSongByDuration(Scanner scanner) {
+        System.out.print("How much minutes does wanted song have: ");
+        int song_minutes = scanner.nextInt();
+        System.out.print("\nHow much seconds does wanted song have: ");
+        int song_seconds = scanner.nextInt();
+        if(song_minutes < 0 || song_seconds < 0) {
+            System.out.println("Incorrect input!");
+            return;
+        }
+        Song wantedSong = dbManager.findClosestSongByDuration(song_minutes, song_seconds);
+
+        if (wantedSong != null) {
+            System.out.print("Song: " + wantedSong.getName() + ", Author: " + wantedSong.getAuthor().getName() + ", Duration: ");
+            wantedSong.outputDuration();
+            System.out.println();
+        } else {
+            System.out.println("Error: No songs present in table.");
+        }
     }
 }

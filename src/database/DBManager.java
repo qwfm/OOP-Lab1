@@ -3,6 +3,8 @@ package database;
 import classes.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBManager {
 
@@ -32,7 +34,7 @@ public class DBManager {
             ResultSet generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int generatedID = generatedKeys.getInt(1);
-                genre.setGenreID(generatedID); // Встановлюємо ID в об'єкт Genre
+                genre.setGenreID(generatedID);
             }
             System.out.println("Genre inserted successfully with ID: " + genre.getGenreID());
         } catch (SQLException e) {
@@ -50,7 +52,7 @@ public class DBManager {
 
             if (rs.next()) {
                 genre = new Genre();
-                genre.setGenreID(rs.getInt("id"));  // Додаємо встановлення ID
+                genre.setGenreID(rs.getInt("id"));
                 genre.setName(rs.getString("name"));
             }
         } catch (SQLException e) {
@@ -71,11 +73,10 @@ public class DBManager {
             stmt.setInt(3, author.getLabel().getLabelID());
             stmt.executeUpdate();
 
-            // Отримання автоінкрементного ID
             ResultSet generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int generatedID = generatedKeys.getInt(1);
-                author.setAuthorID(generatedID); // Встановлюємо ID в об'єкт Author
+                author.setAuthorID(generatedID);
             }
             System.out.println("Author inserted successfully with ID: " + author.getAuthorID());
         } catch (SQLException e) {
@@ -167,25 +168,84 @@ public class DBManager {
         }
     }
 
-
     public SongCollection getSongCollectionById(int id) {
         String sql = "SELECT * FROM SongCollections WHERE id = ?";
+        String sql1 = "SELECT song_id FROM SongCollectionTracks WHERE collection_id = ?";
         SongCollection collection = null;
+        List<Song> songs = new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql);
+             PreparedStatement stmt1 = connection.getConnection().prepareStatement(sql1)) {
 
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
+            stmt1.setInt(1, id);
 
+            ResultSet rs = stmt.executeQuery();
+            ResultSet rs1 = stmt1.executeQuery();
+
+            // Check if the song collection exists
             if (rs.next()) {
                 collection = new SongCollection();
                 collection.setCollectionID(rs.getInt("id"));
                 collection.setName(rs.getString("name"));
+
+                // Loop through the song IDs associated with this collection
+                while (rs1.next()) {
+                    int songId = rs1.getInt("song_id");
+                    Song song = getSongById(songId);
+                    if (song != null) {
+                        songs.add(song);
+                    }
+                }
+
+                collection.setSongs(songs);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error fetching song collection by ID", e);
         }
         return collection;
+    }
+
+    public void addSongToCollection(int collectionId, int songId) {
+        String sql = "INSERT INTO SongCollectionTracks (collection_id, song_id) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, collectionId);
+            stmt.setInt(2, songId);
+            stmt.executeUpdate();
+            System.out.println("Song added to collection successfully.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Error adding song to collection", e);
+        }
+    }
+
+    public void removeSongFromCollection(int collectionId, int songId) {
+        String sql = "DELETE FROM SongCollectionTracks WHERE collection_id = ? AND song_id = ?";
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, collectionId);
+            stmt.setInt(2, songId);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Song removed from collection successfully.");
+            } else {
+                System.out.println("Song was not found in the collection.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error removing song from collection", e);
+        }
+    }
+
+    public void viewSongCollection(int collectionId) {
+        SongCollection col = null;
+        try {
+            col = getSongCollectionById(collectionId);
+            col.print();
+        }
+        catch (NullPointerException e) {
+            System.out.println("Error outputting collection: either doesn't exist or it's empty");
+            return;
+        }
     }
 
     //////SONG TABLE FUNCTIONS////////
@@ -320,7 +380,6 @@ public class DBManager {
         }
     }
 
-    // Новий метод для оновлення SongCollection
     public void updateSongCollection(SongCollection collection) {
         String sql = "UPDATE SongCollections SET name = ? WHERE id = ?";
 
@@ -644,5 +703,37 @@ public class DBManager {
         } catch (SQLException e) {
             throw new RuntimeException("Error printing all genres", e);
         }
+    }
+
+    public Song findClosestSongByDuration(int minutes, int seconds) {
+        String sql = "SELECT * FROM Songs";
+        List<Song> songs = new ArrayList<>();
+
+        try (Statement stmt = connection.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                songs.add(getSongById(id));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error printing all genres", e);
+        }
+
+        int userDurationInSeconds = minutes * 60 + seconds;
+
+        Song closestSong = null;
+        int closestDurationDifference = Integer.MAX_VALUE;
+
+        for (Song song : songs) {
+            int songDurationInSeconds = (int) (song.getHours() * 3600 + song.getMinutes() * 60 + song.getSeconds());
+            int durationDifference = Math.abs(songDurationInSeconds - userDurationInSeconds);
+
+            if (durationDifference < closestDurationDifference) {
+                closestDurationDifference = durationDifference;
+                closestSong = song;
+            }
+        }
+
+        return closestSong;
     }
 }

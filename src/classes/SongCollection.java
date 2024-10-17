@@ -32,10 +32,9 @@ public class SongCollection {
 
     public void setSongs(List<Song> songs) {
         this.songs = songs;
-        sortSongsByGenre();
     }
 
-    public void totalDuration() {
+    public void printTotalDuration() {
         int totalSeconds = songs.stream()
                 .mapToInt(song -> (int) (song.getHours() * 3600 + song.getMinutes() * 60 + song.getSeconds()))
                 .sum();
@@ -55,12 +54,8 @@ public class SongCollection {
         this.name = name;
     }
 
-    public void sortSongsByGenre() {
-        Map<Genre, Long> genreCountMap = songs.stream()
-                .collect(Collectors.groupingBy(musicTrack -> musicTrack.getAuthor().getGenre(), Collectors.counting()));
-
-        songs.sort(Comparator.comparing((Song track) -> genreCountMap.get(track.getAuthor().getGenre()))
-                .reversed());
+    public void sortSongsByGenreAlphabetically() {
+        songs.sort(Comparator.comparing(song -> song.getAuthor().getGenre().getName()));
     }
 
     public void print() {

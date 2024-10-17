@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="Made some tests, added update methods and remade some + unfinished menu">
+    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/music.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/SongCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/SongCollection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/DBManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/menu/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/DatabaseTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/DatabaseTester.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +58,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.DatabaseTester.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
@@ -134,7 +136,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729096511292</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added print-all-*thing* - methods, fixed objects having null ID's, made delete methods delete derivative objects of the original">
+      <option name="closed" value="true" />
+      <created>1729119751812</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1729119751812</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -154,7 +164,8 @@
     <MESSAGE value="Every mention anywhere of musicTrack has been renamed to &quot;song&quot;, added an initializer for some tables in DB, added a genre class, added a class for a table of songs with some functions + sorting of songs by genre" />
     <MESSAGE value="Made a DB - manager class, minor changes to some classes" />
     <MESSAGE value="Made some tests, added update methods and remade some + unfinished menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made some tests, added update methods and remade some + unfinished menu" />
+    <MESSAGE value="Added print-all-*thing* - methods, fixed objects having null ID's, made delete methods delete derivative objects of the original" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added print-all-*thing* - methods, fixed objects having null ID's, made delete methods delete derivative objects of the original" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

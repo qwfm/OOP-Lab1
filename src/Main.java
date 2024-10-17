@@ -10,8 +10,6 @@ public class Main {
 
         try{Class.forName("org.sqlite.JDBC");}catch(ClassNotFoundException e){System.out.print("");}
 
-        DatabaseTester.test();
-
         MainMenu.startMenu();
     }
 }

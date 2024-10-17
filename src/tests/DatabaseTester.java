@@ -2,6 +2,7 @@ package tests;
 
 import classes.*;
 import database.*;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,7 +12,10 @@ public class DatabaseTester {
     private static ConnectDB connection;
     private static DBManager dbManager;
 
-    public static void test() throws SQLException {
+    @Test
+    public void test() throws SQLException {
+        try{Class.forName("org.sqlite.JDBC");}catch(ClassNotFoundException e){System.out.print("");}
+
         initializeDatabase();
         testGenre();
         testLabel();
@@ -93,6 +97,7 @@ public class DatabaseTester {
             Song song = dbManager.getSongById(i);
             if (song != null) {
                 songs.add(song);
+                dbManager.addSongToCollection(1, song.getSongID());
             }
         }
         SongCollection collection = new SongCollection("Greatest Hits", songs);
