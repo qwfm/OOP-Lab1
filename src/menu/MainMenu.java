@@ -231,8 +231,6 @@ public class MainMenu {
                 System.out.print("Enter author ID: ");
                 int author_id = scanner.nextInt();
                 author = dbManager.getAuthorById(author_id);
-                Genre author_genre = dbManager.getGenreById(author.getGenre().getGenreID());
-                Label author_label = dbManager.getLabelById(author.getLabel().getLabelID());
                 System.out.println("Author: " + author.getName() +
                             ", Genre: " + author.getGenre().getName() +
                             ", Label: " + author.getLabel().getName());
@@ -408,7 +406,6 @@ public class MainMenu {
             System.out.println("Genre deleted successfully.");
         } else {
             System.out.println("Error: Invalid genre ID.");
-            return;
         }
     }
 
@@ -421,7 +418,6 @@ public class MainMenu {
             System.out.println("Author deleted successfully.");
         } else {
             System.out.println("Error: Invalid author ID.");
-            return;
         }
     }
 
@@ -434,7 +430,6 @@ public class MainMenu {
             System.out.println("Label deleted successfully.");
         } else {
             System.out.println("Error: Invalid label ID.");
-            return;
         }
     }
 
@@ -447,7 +442,6 @@ public class MainMenu {
             System.out.println("Song deleted successfully.");
         } else {
             System.out.println("Error: Invalid song ID.");
-            return;
         }
     }
 

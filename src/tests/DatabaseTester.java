@@ -62,8 +62,6 @@ public class DatabaseTester {
     private static void testAuthor() {
         System.out.println("\nTesting Author...");
         String[] authorNames = {"Michael Jackson", "The Beatles", "Madonna"};
-        String[] genreNames = {"Pop", "Rock", "Pop"};
-        String[] labelNames = {"Epic Records", "Apple Records", "Interscope Records"};
         for (int i = 0; i < authorNames.length; i++) {
             Genre genre = dbManager.getGenreById(i + 1);
             Label label = dbManager.getLabelById(i + 1);

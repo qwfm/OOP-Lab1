@@ -237,14 +237,13 @@ public class DBManager {
     }
 
     public void viewSongCollection(int collectionId) {
-        SongCollection col = null;
+        SongCollection col;
         try {
             col = getSongCollectionById(collectionId);
             col.print();
         }
         catch (NullPointerException e) {
             System.out.println("Error outputting collection: either doesn't exist or it's empty");
-            return;
         }
     }
 
@@ -412,138 +411,85 @@ public class DBManager {
     }
 
     public void deleteGenreById(int genreId) {
-        try {
-            connection.getConnection().setAutoCommit(false);
+        try (Connection conn = connection.getConnection()) {
+            conn.setAutoCommit(false);
 
-            // Delete all songs of authors with this genre
-            String deleteSongsSQL = "DELETE FROM Songs WHERE author_id IN (SELECT id FROM Authors WHERE genre_id = ?)";
-            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteSongsSQL)) {
-                stmt.setInt(1, genreId);
-                stmt.executeUpdate();
+            executeUpdate(conn, "DELETE FROM Songs WHERE author_id IN (SELECT id FROM Authors WHERE genre_id = ?)", genreId);
+            executeUpdate(conn, "DELETE FROM Authors WHERE genre_id = ?", genreId);
+
+            int affectedRows = executeUpdate(conn, "DELETE FROM Genres WHERE id = ?", genreId);
+            if (affectedRows > 0) {
+                System.out.println("Genre and all related authors and songs deleted successfully.");
+            } else {
+                System.out.println("No genre found with ID: " + genreId);
             }
 
-            // Delete all authors with this genre
-            String deleteAuthorsSQL = "DELETE FROM Authors WHERE genre_id = ?";
-            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteAuthorsSQL)) {
-                stmt.setInt(1, genreId);
-                stmt.executeUpdate();
-            }
-
-            // Delete the genre
-            String deleteGenreSQL = "DELETE FROM Genres WHERE id = ?";
-            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteGenreSQL)) {
-                stmt.setInt(1, genreId);
-                int affectedRows = stmt.executeUpdate();
-                if (affectedRows > 0) {
-                    System.out.println("Genre and all related authors and songs deleted successfully.");
-                } else {
-                    System.out.println("No genre found with ID: " + genreId);
-                }
-            }
-
-            connection.getConnection().commit();
+            conn.commit();
         } catch (SQLException e) {
-            try {
-                connection.getConnection().rollback();
-            } catch (SQLException ex) {
-                throw new RuntimeException("Error rolling back transaction", ex);
-            }
-            throw new RuntimeException("Error deleting genre and related data", e);
+            System.err.println("Error deleting genre and related data: " + e.getMessage());
         } finally {
-            try {
-                connection.getConnection().setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new RuntimeException("Error resetting auto-commit", e);
-            }
+            resetAutoCommit();
         }
     }
 
     public void deleteLabelById(int labelId) {
-        try {
-            connection.getConnection().setAutoCommit(false);
+        try (Connection conn = connection.getConnection()) {
+            conn.setAutoCommit(false);
 
-            // Delete all songs of authors with this label
-            String deleteSongsSQL = "DELETE FROM Songs WHERE author_id IN (SELECT id FROM Authors WHERE label_id = ?)";
-            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteSongsSQL)) {
-                stmt.setInt(1, labelId);
-                stmt.executeUpdate();
+            executeUpdate(conn, "DELETE FROM Songs WHERE author_id IN (SELECT id FROM Authors WHERE label_id = ?)", labelId);
+            executeUpdate(conn, "DELETE FROM Authors WHERE label_id = ?", labelId);
+
+            int affectedRows = executeUpdate(conn, "DELETE FROM Labels WHERE id = ?", labelId);
+            if (affectedRows > 0) {
+                System.out.println("Label and all related authors and songs deleted successfully.");
+            } else {
+                System.out.println("No label found with ID: " + labelId);
             }
 
-            // Delete all authors with this label
-            String deleteAuthorsSQL = "DELETE FROM Authors WHERE label_id = ?";
-            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteAuthorsSQL)) {
-                stmt.setInt(1, labelId);
-                stmt.executeUpdate();
-            }
-
-            // Delete the label
-            String deleteLabelSQL = "DELETE FROM Labels WHERE id = ?";
-            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteLabelSQL)) {
-                stmt.setInt(1, labelId);
-                int affectedRows = stmt.executeUpdate();
-                if (affectedRows > 0) {
-                    System.out.println("Label and all related authors and songs deleted successfully.");
-                } else {
-                    System.out.println("No label found with ID: " + labelId);
-                }
-            }
-
-            connection.getConnection().commit();
+            conn.commit();
         } catch (SQLException e) {
-            try {
-                connection.getConnection().rollback();
-            } catch (SQLException ex) {
-                throw new RuntimeException("Error rolling back transaction", ex);
-            }
-            throw new RuntimeException("Error deleting label and related data", e);
+            System.err.println("Error deleting label and related data: " + e.getMessage());
         } finally {
-            try {
-                connection.getConnection().setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new RuntimeException("Error resetting auto-commit", e);
-            }
+            resetAutoCommit();
         }
     }
 
     public void deleteAuthorById(int authorId) {
-        try {
-            connection.getConnection().setAutoCommit(false);
+        try (Connection conn = connection.getConnection()) {
+            conn.setAutoCommit(false);
 
-            // Delete all songs of this author
-            String deleteSongsSQL = "DELETE FROM Songs WHERE author_id = ?";
-            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteSongsSQL)) {
-                stmt.setInt(1, authorId);
-                stmt.executeUpdate();
+            executeUpdate(conn, "DELETE FROM Songs WHERE author_id = ?", authorId);
+
+            int affectedRows = executeUpdate(conn, "DELETE FROM Authors WHERE id = ?", authorId);
+            if (affectedRows > 0) {
+                System.out.println("Author and all related songs deleted successfully.");
+            } else {
+                System.out.println("No author found with ID: " + authorId);
             }
 
-            // Delete the author
-            String deleteAuthorSQL = "DELETE FROM Authors WHERE id = ?";
-            try (PreparedStatement stmt = connection.getConnection().prepareStatement(deleteAuthorSQL)) {
-                stmt.setInt(1, authorId);
-                int affectedRows = stmt.executeUpdate();
-                if (affectedRows > 0) {
-                    System.out.println("Author and all related songs deleted successfully.");
-                } else {
-                    System.out.println("No author found with ID: " + authorId);
-                }
-            }
-
-            connection.getConnection().commit();
+            conn.commit();
         } catch (SQLException e) {
-            try {
-                connection.getConnection().rollback();
-            } catch (SQLException ex) {
-                throw new RuntimeException("Error rolling back transaction", ex);
-            }
-            throw new RuntimeException("Error deleting author and related data", e);
+            System.err.println("Error deleting author and related data: " + e.getMessage());
         } finally {
-            try {
-                connection.getConnection().setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new RuntimeException("Error resetting auto-commit", e);
-            }
+            resetAutoCommit();
         }
     }
+
+    private int executeUpdate(Connection conn, String sql, int param) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, param);
+            return stmt.executeUpdate();
+        }
+    }
+
+    private void resetAutoCommit() {
+        try {
+            connection.getConnection().setAutoCommit(true);
+        } catch (SQLException e) {
+            System.err.println("Error resetting auto-commit: " + e.getMessage());
+        }
+    }
+
 
     public void deleteSongCollectionById(int collectionId) {
         String sql = "DELETE FROM SongCollections WHERE id = ?";
@@ -566,12 +512,10 @@ public class DBManager {
         String[] tables = {"SongCollectionTracks", "SongCollections", "Songs", "Authors", "Labels", "Genres"};
 
         try {
-            // Disable foreign key constraints
             try (Statement stmt = connection.getConnection().createStatement()) {
                 stmt.execute("PRAGMA foreign_keys = OFF;");
             }
 
-            // Drop tables
             for (String table : tables) {
                 String sql = "DROP TABLE IF EXISTS " + table;
                 try (Statement stmt = connection.getConnection().createStatement()) {
@@ -580,7 +524,6 @@ public class DBManager {
                 }
             }
 
-            // Re-enable foreign key constraints
             try (Statement stmt = connection.getConnection().createStatement()) {
                 stmt.execute("PRAGMA foreign_keys = ON;");
             }
@@ -595,12 +538,10 @@ public class DBManager {
         String[] tables = {"SongCollectionTracks", "SongCollections", "Songs", "Authors", "Labels", "Genres"};
 
         try {
-            // Disable foreign key constraints
             try (Statement stmt = connection.getConnection().createStatement()) {
                 stmt.execute("PRAGMA foreign_keys = OFF;");
             }
 
-            // Clear tables
             for (String table : tables) {
                 String sql = "DELETE FROM " + table;
                 try (Statement stmt = connection.getConnection().createStatement()) {
@@ -609,7 +550,6 @@ public class DBManager {
                 }
             }
 
-            // Reset auto-increment counters
             for (String table : tables) {
                 String sql = "DELETE FROM sqlite_sequence WHERE name='" + table + "'";
                 try (Statement stmt = connection.getConnection().createStatement()) {
@@ -617,7 +557,6 @@ public class DBManager {
                 }
             }
 
-            // Re-enable foreign key constraints
             try (Statement stmt = connection.getConnection().createStatement()) {
                 stmt.execute("PRAGMA foreign_keys = ON;");
             }

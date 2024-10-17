@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="">
+    <list default="true" id="b5871df3-658c-4975-a108-af755d45f7bf" name="Changes" comment="Junit tests, fixed getSongCollectionById, made methods to add collection, add songs to it etc. + added method findClosestSongByDuration.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/SongCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/SongCollection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/DBManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/menu/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MainMenu.java" afterDir="false" />
@@ -144,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729119751812</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Junit tests, fixed getSongCollectionById, made methods to add collection, add songs to it etc. + added method findClosestSongByDuration.">
+      <option name="closed" value="true" />
+      <created>1729157581754</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1729157581754</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -165,7 +171,9 @@
     <MESSAGE value="Made a DB - manager class, minor changes to some classes" />
     <MESSAGE value="Made some tests, added update methods and remade some + unfinished menu" />
     <MESSAGE value="Added print-all-*thing* - methods, fixed objects having null ID's, made delete methods delete derivative objects of the original" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added print-all-*thing* - methods, fixed objects having null ID's, made delete methods delete derivative objects of the original" />
+    <MESSAGE value="Junit tests, fixed getSongCollectionById, made methods to add collection, add songs to it etc. + added method findClosestSongByDuration. Why do I not commit more often? This brench is a shithole" />
+    <MESSAGE value="Junit tests, fixed getSongCollectionById, made methods to add collection, add songs to it etc. + added method findClosestSongByDuration." />
+    <option name="LAST_COMMIT_MESSAGE" value="Junit tests, fixed getSongCollectionById, made methods to add collection, add songs to it etc. + added method findClosestSongByDuration." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
